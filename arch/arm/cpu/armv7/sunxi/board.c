@@ -32,6 +32,7 @@
 #include <asm/arch/timer.h>
 #include <asm/arch/gpio.h>
 #include <asm/arch/sys_proto.h>
+#include <netdev.h>
 
 int gpio_init(void)
 {
@@ -76,5 +77,18 @@ void enable_caches(void)
 {
 	/* Enable D-cache. I-cache is already enabled in start.S */
 	dcache_enable();
+}
+#endif
+
+#if defined(CONFIG_SUNXI_WEMAC)
+/*
+ * Initializes on-chip ethernet controllers.
+ * to override, implement board_eth_init()
+ */
+int cpu_eth_init(bd_t *bis)
+{
+	sunxi_wemac_initialize(bis);
+
+	return 0;
 }
 #endif
