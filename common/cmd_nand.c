@@ -181,6 +181,19 @@ static int get_part(const char *partname, int *idx, loff_t *off, loff_t *size,
 		return ret;
 
 	return 0;
+#elif defined CONFIG_NAND_SUNXI
+	int ret;
+
+	*idx = 0;
+	ret = sunxi_nand_getpart_info_byname(partname, off, size);
+
+	if(ret) {
+		printf("Can not find partition \'%s\'\n", partname);
+		return ret;
+	}
+
+	return 0;
+
 #else
 	puts("offset is not a number\n");
 	return -1;
@@ -229,6 +242,7 @@ static int arg_off_size(int argc, char *const argv[], int *idx,
 
 	if (*size > *maxsize) {
 		puts("Size exceeds partition or device limit\n");
+		printf(" size:%lld, max:%lld \n ", *size, maxsize);
 		return -1;
 	}
 
@@ -531,8 +545,8 @@ static int do_nand(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	 */
 	if (dev < 0 || dev >= CONFIG_SYS_MAX_NAND_DEVICE ||
 	    !nand_info[dev].name) {
-		puts("\nno devices available\n");
-		return 1;
+		//puts("\nno devices available\n");
+		//return 1;
 	}
 	nand = &nand_info[dev];
 
@@ -591,6 +605,7 @@ static int do_nand(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 
 		printf("\nNAND %s: ", cmd);
 		/* skip first two or three arguments, look for offset and size */
+        dev = 0;
 		if (arg_off_size(argc - o, argv + o, &dev, &off, &size,
 				 &maxsize) != 0)
 			return 1;
@@ -623,7 +638,7 @@ static int do_nand(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 				return 1;
 			}
 		}
-		ret = nand_erase_opts(nand, &opts);
+		ret = sunxi_nand_erase_opts(nand, &opts);
 		printf("%s\n", ret ? "ERROR" : "OK");
 
 		return ret == 0 ? 0 : 1;
@@ -688,12 +703,10 @@ static int do_nand(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 		if (!s || !strcmp(s, ".jffs2") ||
 		    !strcmp(s, ".e") || !strcmp(s, ".i")) {
 			if (read)
-				ret = nand_read_skip_bad(nand, off, &rwsize,
-							 NULL, maxsize,
+				ret = sunxi_nand_read_opts(nand, off, &rwsize,
 							 (u_char *)addr);
 			else
-				ret = nand_write_skip_bad(nand, off, &rwsize,
-							  NULL, maxsize,
+				ret = sunxi_nand_write_opts(nand, off, &rwsize,
 							  (u_char *)addr, 0);
 #ifdef CONFIG_CMD_NAND_TRIMFFS
 		} else if (!strcmp(s, ".trimffs")) {

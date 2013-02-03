@@ -75,16 +75,17 @@
 #define CONFIG_NR_DRAM_BANKS		1
 #define PHYS_SDRAM_0			CONFIG_SYS_SDRAM_BASE
 #define PHYS_SDRAM_0_SIZE		0x40000000
-#if 0
+
 /* Nand config */
 #define CONFIG_NAND
 #define CONFIG_NAND_SUNXI
 #define CONFIG_CMD_NAND                         /* NAND support */
 #define CONFIG_SYS_MAX_NAND_DEVICE      1
 #define CONFIG_SYS_NAND_BASE            0x00
-#endif
+
 
 #define CONFIG_CMD_MEMORY
+#define CONFIG_SUNXI_DMA
 #define CONFIG_CMD_SETEXPR
 
 #define CONFIG_SETUP_MEMORY_TAGS
@@ -112,6 +113,8 @@
  * 1MB = 0x100000, 0x100000 = 1024 * 1024
  */
 #define CONFIG_SYS_MALLOC_LEN		(CONFIG_ENV_SIZE + (1 << 20))
+
+#define CONFIG_STORAGE_NAND
 
 /* Flat Device Tree (FDT/DT) support */
 #define CONFIG_OF_LIBFDT

@@ -94,6 +94,7 @@ int gpio_init(void)
 
 void reset_cpu(ulong addr)
 {
+    sunxi_nand_flush_opts();
 	watchdog_set(0);
 	while (1);
 }

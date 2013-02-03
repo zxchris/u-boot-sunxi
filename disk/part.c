@@ -43,6 +43,9 @@ static const struct block_drvr block_drvr[] = {
 #if defined(CONFIG_SYSTEMACE)
 	{ .name = "ace", .get_dev = systemace_get_dev, },
 #endif
+#if defined(CONFIG_CMD_FAT)
+	{ .name = "nand", .get_dev = nand_get_dev, },
+#endif
 	{ },
 };
 

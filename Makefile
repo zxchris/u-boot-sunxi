@@ -343,6 +343,10 @@ LIBS-y += arch/$(ARCH)/cpu/tegra-common/libcputegra-common.o
 LIBS-y += $(CPUDIR)/tegra-common/libtegra-common.o
 endif
 
+ifeq ($(SOC),sunxi)
+LIBS-y += nand_sunxi/libsunxi-nand.o
+endif
+
 LIBS := $(addprefix $(obj),$(sort $(LIBS-y)))
 .PHONY : $(LIBS)
 
