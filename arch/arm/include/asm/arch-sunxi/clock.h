@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA 02111-1307 USA
  */
- 
+
 #ifndef _SUNXI_CLOCK_H
 #define _SUNXI_CLOCK_H
 
@@ -228,6 +228,7 @@ struct sunxi_ccm_reg {
 int clock_init(void);
 int clock_twi_onoff(int port, int state);
 void clock_set_pll1(int mhz);
+unsigned int clock_get_pll5(void);
 #endif
 
 #endif /* _SUNXI_CLOCK_H */
