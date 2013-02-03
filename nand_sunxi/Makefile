@@ -1,5 +1,5 @@
 #
-# (C) Copyright 2006
+# (C) Copyright 2000, 2001, 2002
 # Wolfgang Denk, DENX Software Engineering, wd@denx.de.
 #
 # See file CREDITS for list of people who contributed to this
@@ -12,7 +12,7 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
@@ -23,15 +23,31 @@
 
 include $(TOPDIR)/config.mk
 
-LIB	:= $(obj)libdma.o
+LIB	= $(obj)libsunxi-nand.o
 
-COBJS-$(CONFIG_FSLDMAFEC) += MCD_tasksInit.o MCD_dmaApi.o MCD_tasks.o
-COBJS-$(CONFIG_APBH_DMA) += apbh_dma.o
-COBJS-$(CONFIG_FSL_DMA) += fsl_dma.o
-COBJS-$(CONFIG_OMAP3_DMA) += omap3_dma.o
-COBJS-$(CONFIG_SUNXI_DMA) += sunxi_dma.o
+$(shell mkdir -p $(obj)nand_drv $(obj)src/format $(obj)src/logic \
+	$(obj)src/ndfc $(obj)src/physic $(obj)src/scan)
 
-COBJS	:= $(COBJS-y)
+COBJS	:= ./nand_drv/nand_for_uboot.o  		\
+		   ./nand_drv/nand_osal_uboot.o 		\
+		   ./nand_drv/nand_fspart.o 			\
+		   ./src/format/nand_format.o			\
+		   ./src/logic/bad_manage.o				\
+		   ./src/logic/logic_cache.o			\
+		   ./src/logic/logic_ctl.o				\
+		   ./src/logic/mapping.o				\
+		   ./src/logic/mapping_base.o			\
+		   ./src/logic/merge.o					\
+		   ./src/logic/read_reclaim.o			\
+		   ./src/logic/wear_levelling.o			\
+		   ./src/ndfc/nfc_r.o					\
+		   ./src/ndfc/nfc_w.o					\
+		   ./src/physic/nand_phy.o				\
+		   ./src/physic/nand_simple_r.o			\
+		   ./src/physic/nand_simple_w.o			\
+		   ./src/scan/nand_id.o					\
+		   ./src/scan/nand_scan.o
+
 SRCS	:= $(COBJS:.o=.c)
 OBJS	:= $(addprefix $(obj),$(COBJS))
 

@@ -133,6 +133,7 @@ void s_init(void) {
 extern void sunxi_reset(void);
 void reset_cpu(ulong addr) {
 
+	sunxi_nand_flush_opts();
 	sunxi_reset();
 }
 

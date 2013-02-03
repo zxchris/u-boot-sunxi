@@ -88,13 +88,19 @@ static void nand_init_chip(int i)
 	mtd->priv = nand;
 	nand->IO_ADDR_R = nand->IO_ADDR_W = (void  __iomem *)base_addr;
 
-	if (board_nand_init(nand))
-		return;
+	if (board_nand_init(nand) == 0) {
 
-	if (nand_scan(mtd, maxchips))
-		return;
+		if (nand_scan(mtd, maxchips))
+			return;
 
-	nand_register(i);
+		nand_register(i);
+	} else {
+		mtd->name = NULL;
+		mtd->size = NAND_GetDiskSize()* 512;    /* NAND_GetDiskSize returns sectors */
+#ifdef DEBUG
+		printf("mtd->size:%llu \n", mtd->size);
+#endif
+	}
 }
 #endif
 

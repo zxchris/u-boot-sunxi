@@ -327,6 +327,10 @@ ifeq ($(SOC),tegra20)
 LIBS-y += arch/$(ARCH)/cpu/$(SOC)-common/lib$(SOC)-common.o
 endif
 
+ifeq ($(SOC),sunxi)
+LIBS-y += nand_sunxi/libsunxi-nand.o
+endif
+
 LIBS := $(addprefix $(obj),$(sort $(LIBS-y)))
 .PHONY : $(LIBS)
 
