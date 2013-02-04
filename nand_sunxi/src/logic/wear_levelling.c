@@ -125,7 +125,7 @@ __s32 LML_WearLevelling(void)
         tmpSrcPage.SDataPtr = (void *)tmpSpare;
         LML_VirtualPageRead(&tmpSrcPage);
 
-        if(tmpSpare[0].LogicInfo != 0xffff)
+        if(tmpSpare[0].LogicInfoLo == 0xff && tmpSpare[0].LogicInfoHi == 0xff)
         {
             //need copy data from the data block to the free block
             tmpSrcPage.SectBitmap = FULL_BITMAP_OF_SUPER_PAGE;
@@ -162,7 +162,7 @@ __s32 LML_WearLevelling(void)
         //set the data block item by the free block
         BMM_SetDataBlk(tmpLogicBlk, &tmpFreeBlk);
 
-        if(tmpSpare[0].LogicInfo != 0xffff)
+        if(tmpSpare[0].LogicInfoLo == 0xff && tmpSpare[0].LogicInfoHi == 0xff)
         {
             //erase the data block to a new free block
             result = LML_VirtualBlkErase(CUR_MAP_ZONE, tmpDataBlk.PhyBlkNum);

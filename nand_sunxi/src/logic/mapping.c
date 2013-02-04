@@ -729,7 +729,8 @@ rewrite:
     /*write page 0, need set spare info*/
     if (TablePage == 0)
     {
-        UserData[0].LogicInfo = (1<<14) | ((nZone % ZONE_CNT_OF_DIE) << 10) | 0xaa ;
+        UserData[0].LogicInfoLo = 0xaa;
+        UserData[0].LogicInfoHi = (1<<6) | ((nZone % ZONE_CNT_OF_DIE) << 2);
     }
     UserData[0].PageStatus = 0x55;
     param.MDataPtr = LML_PROCESS_TBL_BUF;

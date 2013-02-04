@@ -464,12 +464,14 @@ __CHECK_LOGICAL_INFO_OF_DATA_BLOCK:
     tmpPhyPage.SDataPtr = (void *)tmpSpare;
     LML_VirtualPageRead(&tmpPhyPage);
 
-    if(tmpSpare[0].LogicInfo == 0xffff)
+    if(tmpSpare[0].LogicInfoLo == 0xff && tmpSpare[0].LogicInfoHi == 0xff)
     {
         tmpSpare[0].BadBlkFlag = 0xff;
         tmpSpare[1].BadBlkFlag = 0xff;
-        tmpSpare[0].LogicInfo = ((CUR_MAP_ZONE % ZONE_CNT_OF_DIE)<<10) | nBlk;
-        tmpSpare[1].LogicInfo = ((CUR_MAP_ZONE % ZONE_CNT_OF_DIE)<<10) | nBlk;
+        tmpSpare[0].LogicInfoLo = nBlk & 0xff;
+        tmpSpare[0].LogicInfoHi = ((CUR_MAP_ZONE % ZONE_CNT_OF_DIE)<<2) | (nBlk>>8);
+        tmpSpare[1].LogicInfoLo = nBlk & 0xff;
+        tmpSpare[1].LogicInfoHi = ((CUR_MAP_ZONE % ZONE_CNT_OF_DIE)<<2) | (nBlk>>8);
         tmpSpare[0].LogicPageNum = 0xffff;
         tmpSpare[1].LogicPageNum = 0xffff;
         tmpSpare[0].PageStatus = 0xff;
@@ -597,8 +599,10 @@ __CHECK_WRITE_LOGICAL_INFO_OF_LOG_BLOCK:
 
         tmpSpare[0].BadBlkFlag = 0xff;
         tmpSpare[1].BadBlkFlag = 0xff;
-        tmpSpare[0].LogicInfo = ((CUR_MAP_ZONE % ZONE_CNT_OF_DIE)<<10) | nBlk;
-        tmpSpare[1].LogicInfo = ((CUR_MAP_ZONE % ZONE_CNT_OF_DIE)<<10) | nBlk;
+        tmpSpare[0].LogicInfoLo = nBlk & 0xff;
+        tmpSpare[0].LogicInfoHi = ((CUR_MAP_ZONE % ZONE_CNT_OF_DIE)<<2) | (nBlk>>8);
+        tmpSpare[1].LogicInfoLo = nBlk & 0xff;
+        tmpSpare[1].LogicInfoHi = ((CUR_MAP_ZONE % ZONE_CNT_OF_DIE)<<2) | (nBlk>>8);
         tmpSpare[0].LogicPageNum = 0xffff;
         tmpSpare[1].LogicPageNum = 0xffff;
         tmpSpare[0].PageStatus =  tmpSpare[0].PageStatus + 1;

@@ -48,7 +48,7 @@ __s32 _copy_page0(__u32 SrcBlk,__u16 SrcDataPage,__u32 DstBlk,__u8 SeqPlus)
         return NAND_OP_FALSE;
     }
     seq = UserData[0].PageStatus;
-    LogicInfo = UserData[0].LogicInfo;
+    LogicInfo = (UserData[0].LogicInfoHi << 8) | UserData[0].LogicInfoLo;
 
     /*copy main data */
     SrcParam.SectBitmap = DstParam.SectBitmap = FULL_BITMAP_OF_SUPER_PAGE;
@@ -60,7 +60,8 @@ __s32 _copy_page0(__u32 SrcBlk,__u16 SrcDataPage,__u32 DstBlk,__u8 SeqPlus)
         return NAND_OP_FALSE;
     }
 
-    UserData[0].LogicInfo = LogicInfo;
+    UserData[0].LogicInfoLo = LogicInfo & 0xff;
+    UserData[0].LogicInfoHi = LogicInfo >> 8;
     UserData[0].PageStatus = seq + SeqPlus;
     if (NAND_OP_TRUE != LML_VirtualPageWrite(&DstParam)){
         LOGICCTL_ERR("_copy_page0 : write err\n");

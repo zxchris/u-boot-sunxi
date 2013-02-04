@@ -523,8 +523,10 @@ static __s32 _WriteBadBlkFlag(__u32 nDieNum, __u32 nBlock)
     //set bad block flag to the spare data write to nand flash
     tmpSpare[0].BadBlkFlag = 0x00;
     tmpSpare[1].BadBlkFlag = 0x00;
-    tmpSpare[0].LogicInfo = 0x00;
-    tmpSpare[1].LogicInfo = 0x00;
+    tmpSpare[0].LogicInfoLo = 0x00;
+    tmpSpare[1].LogicInfoLo = 0x00;
+    tmpSpare[0].LogicInfoHi = 0x00;
+    tmpSpare[1].LogicInfoHi = 0x00;
     tmpSpare[0].LogicPageNum = 0x00;
     tmpSpare[1].LogicPageNum = 0x00;
     tmpSpare[0].PageStatus = 0x00;
@@ -997,7 +999,7 @@ static __s32 _GetBlkLogicInfo(struct __ScanDieInfo_t *pDieInfo)
                 if(tmpPage == 0)
                 {
                     //get the logical information of the physical block
-                    tmpLogicInfo = tmpSpare[0].LogicInfo;
+                    tmpLogicInfo = (tmpSpare[0].LogicInfoHi << 8) | tmpSpare[0].LogicInfoLo;
                 }
             }
         }
@@ -2051,8 +2053,10 @@ static __s32 _WriteBlkMapTbl(struct __ScanDieInfo_t *pDieInfo)
         //set spare area data for write zone table
         tmpSpare[0].BadBlkFlag = 0xff;
         tmpSpare[1].BadBlkFlag = 0xff;
-        tmpSpare[0].LogicInfo = (1<<14) | (tmpZone<<10) | TABLE_BLK_MARK;
-        tmpSpare[1].LogicInfo = (1<<14) | (tmpZone<<10) | TABLE_BLK_MARK;
+        tmpSpare[0].LogicInfoLo = TABLE_BLK_MARK & 0xff;
+        tmpSpare[1].LogicInfoLo = TABLE_BLK_MARK & 0xff;
+        tmpSpare[0].LogicInfoHi = (1<<6) | (tmpZone<<2) | (TABLE_BLK_MARK >> 8);
+        tmpSpare[1].LogicInfoHi = (1<<6) | (tmpZone<<2) | (TABLE_BLK_MARK >> 8);
         tmpSpare[0].LogicPageNum = 0xffff;
         tmpSpare[1].LogicPageNum = 0xffff;
         tmpSpare[0].PageStatus = 0x55;
@@ -2160,14 +2164,14 @@ static __s32 _SearchZoneTbls(struct __ScanDieInfo_t *pDieInfo)
 
         //check if the bock is a valid block-mapping-table block
         if((tmpSpareData[0].BadBlkFlag != 0xff) || (tmpSpareData[1].BadBlkFlag != 0xff) || \
-                (GET_LOGIC_INFO_TYPE(tmpSpareData[0].LogicInfo) != 1) || \
-                        (GET_LOGIC_INFO_BLK(tmpSpareData[0].LogicInfo) != 0xaa))
+                (GET_LOGIC_INFO_TYPE((tmpSpareData[0].LogicInfoHi << 8) | tmpSpareData[0].LogicInfoLo) != 1) || \
+                        (GET_LOGIC_INFO_BLK((tmpSpareData[0].LogicInfoHi << 8) | tmpSpareData[0].LogicInfoLo) != 0xaa))
         {
             //the block is not a valid block-mapping-table block, ignore it
             continue;
         }
 
-        tmpZoneInDie = GET_LOGIC_INFO_ZONE(tmpSpareData[0].LogicInfo);
+        tmpZoneInDie = GET_LOGIC_INFO_ZONE((tmpSpareData[0].LogicInfoHi << 8) | tmpSpareData[0].LogicInfoLo);
         //check if the zone number in the logicial information of the block is valid
         if(!(tmpZoneInDie < ZONE_CNT_OF_DIE))
         {

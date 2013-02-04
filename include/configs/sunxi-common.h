@@ -175,17 +175,12 @@
 	"scriptaddr=0x44000000\0" \
 	"setargs=setenv bootargs console=${console} root=${root}" \
 		" loglevel=${loglevel} ${panicarg} ${extraargs}\0" \
-	"kernel=uImage\0" \
-	"bootenv=uEnv.txt\0" \
-	"bootscr=boot.scr\0" \
-	"loadbootscr=fatload nand 0:0 $scriptaddr ${bootscr}\0" \
-	"loadbootenv=fatload nand 0:0 $scriptaddr ${bootenv}\0" \
-	"boot_mmc=fatload mmc 0 0x43000000 script.bin &&" \
-		" fatload mmc 0 0x48000000 ${kernel} &&" \
-		" bootm 0x48000000\0" \
-	"boot_nand=fatload nand 0:0 0x43000000 script.bin &&" \
-		" fatload nand 0:0 0x48000000 ${kernel} &&" \
-		" bootm 0x48000000\0"
+	"kernel=/uImage\0" \
+	"bootenv=/uEnv.txt\0" \
+	"bootscr=/boot.scr\0" \
+	"loadbootscr=ext4load nand 1:0 $scriptaddr /boot${bootscr} || fatload nand 0:0 $scriptaddr ${bootscr}\0" \
+	"loadbootenv=ext4load nand 1:0 $scriptaddr /boot${bootenv} || fatload nand 0:0 $scriptaddr ${bootenv}\0" \
+	"boot_nand=ext4load nand 1:0 0x48000000 /boot${kernel} && bootm 0x48000000\0"
 
 #define CONFIG_BOOTDELAY	3
 #define CONFIG_SYS_BOOT_GET_CMDLINE

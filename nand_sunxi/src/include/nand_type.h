@@ -46,8 +46,8 @@ struct __OptionalPhyOpPar_t
 typedef struct
 {
     __u8        ChipCnt;                            //the count of the total nand flash chips are currently connecting on the CE pin
-    __u16       ChipConnectInfo;                    //chip connect information, bit == 1 means there is a chip connecting on the CE pin
 	__u8		RbCnt;
+    __u16       ChipConnectInfo;                    //chip connect information, bit == 1 means there is a chip connecting on the CE pin
 	__u8		RbConnectInfo;						//the connect  information of the all rb  chips are connected
     __u8        RbConnectMode;						//the rb connect  mode
 	__u8        BankCntPerChip;                     //the count of the banks in one nand chip, multiple banks can support Inter-Leave
@@ -65,7 +65,7 @@ typedef struct
 	__u32		ReadRetryType;						//the read retry type
 	__u32       DDRType;
 	__u32		Reserved[32];
-}boot_nand_para_t;
+}boot_nand_para_t __attribute__ ((packed));
 
 typedef struct boot_flash_info{
 	__u32 chip_cnt;
@@ -79,8 +79,8 @@ typedef struct boot_flash_info{
 struct __NandStorageInfo_t
 {
     __u8        ChipCnt;                            //the count of the total nand flash chips are currently connecting on the CE pin
-    __u16        ChipConnectInfo;                    //chip connect information, bit == 1 means there is a chip connecting on the CE pin
 	__u8		RbCnt;
+    __u16       ChipConnectInfo;                    //chip connect information, bit == 1 means there is a chip connecting on the CE pin
 	__u8		RbConnectInfo;						//the connect  information of the all rb  chips are connected
     __u8        RbConnectMode;						//the rb connect  mode
 	__u8        BankCntPerChip;                     //the count of the banks in one nand chip, multiple banks can support Inter-Leave
@@ -97,7 +97,7 @@ struct __NandStorageInfo_t
     __u32		ReadRetryType;						//the read retry type
     __u32       DDRType;
     struct __OptionalPhyOpPar_t OptPhyOpPar;        //the parameters for some optional operation
-};
+} __attribute__ ((packed));
 
 
 //define the page buffer pool for nand flash driver
@@ -116,7 +116,8 @@ struct __NandPageCachePool_t
 struct __NandUserData_t
 {
     __u8        BadBlkFlag;                         //the flag that marks if a physic block is a valid block or a invalid block
-    __u16       LogicInfo;                          //the logical information of the physical block
+    __u8        LogicInfoLo;                        //the logical information of the physical block
+    __u8        LogicInfoHi;                        //the logical information of the physical block
     __u8        Reserved0;                          //reserved for 32bit align
     __u16       LogicPageNum;                       //the value of the logic page number, which the physic page is mapping to
     __u8        PageStatus;                         //the logical information of the physical page

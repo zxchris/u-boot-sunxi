@@ -44,7 +44,7 @@ static void clock_init_safe(void)
 #endif
 
 int clock_init(void)
-
+{
 	struct sunxi_ccm_reg * const ccm =
 		(struct sunxi_ccm_reg *)SUNXI_CCM_BASE;
 

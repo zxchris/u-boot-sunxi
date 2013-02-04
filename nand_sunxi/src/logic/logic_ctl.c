@@ -968,8 +968,10 @@ __s32 LML_PageWrite(__u32 nPage, __u32 nBitmap, void* pBuf)
     }
     tmpSpare[0].BadBlkFlag = 0xff;
     tmpSpare[1].BadBlkFlag = 0xff;
-    tmpSpare[0].LogicInfo = ((LogicalCtl.ZoneNum % ZONE_CNT_OF_DIE)<<10) | LogicalCtl.LogicBlkNum;
-    tmpSpare[1].LogicInfo = ((LogicalCtl.ZoneNum % ZONE_CNT_OF_DIE)<<10) | LogicalCtl.LogicBlkNum;
+    tmpSpare[1].LogicInfoLo = LogicalCtl.LogicBlkNum & 0xff;
+    tmpSpare[1].LogicInfoHi = ((LogicalCtl.ZoneNum % ZONE_CNT_OF_DIE)<<2) | (LogicalCtl.LogicBlkNum >> 8);
+    tmpSpare[1].LogicInfoLo = LogicalCtl.LogicBlkNum & 0xff;
+    tmpSpare[1].LogicInfoHi = ((LogicalCtl.ZoneNum % ZONE_CNT_OF_DIE)<<2) | (LogicalCtl.LogicBlkNum >> 8);
     tmpSpare[0].LogicPageNum = LogicalCtl.LogicPageNum;
     tmpSpare[1].LogicPageNum = LogicalCtl.LogicPageNum;
 
