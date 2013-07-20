@@ -152,35 +152,32 @@
 #define CONFIG_ENV_SIZE			(128 << 10)	/* 128KB */
 
 #define CONFIG_BOOTCOMMAND \
-	"if run loadbootenv; then " \
-		"echo Loaded environment from ${bootenv};" \
-		"env import -t ${scriptaddr} ${filesize};" \
-	"fi;" \
+	"run loadbootenv; " \
 	"if test -n ${uenvcmd}; then " \
 		"echo Running uenvcmd ...;" \
 		"run uenvcmd;" \
 	"fi;" \
-	"if run loadbootscr; then "\
-		"echo Jumping to ${bootscr};" \
-		"source ${scriptaddr};" \
-	"fi;" \
-	"run setargs boot_nand;" \
+	"run loadscriptbin; " \
+	"run setargs loadkernel boot_nand;" \
 
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	"console=ttyS0,115200\0" \
-	"root=/dev/nandb rootwait\0" \
-	"panicarg=panic=10\0" \
-	"extraargs=\0" \
+	"bootdelay=1\0" \
+	"root=/dev/nandb\0" \
 	"loglevel=8\0" \
-	"scriptaddr=0x44000000\0" \
+	"scriptaddr=0x41000000\0" \
+	"scriptbinaddr=0x43000000\0" \
+	"kerneladdr=0x48000000\0" \
 	"setargs=setenv bootargs console=${console} root=${root}" \
-		" loglevel=${loglevel} ${panicarg} ${extraargs}\0" \
+		" loglevel=${loglevel} ${extraargs}\0" \
 	"kernel=/uImage\0" \
+	"scriptbin=/script.bin\0" \
 	"bootenv=/uEnv.txt\0" \
-	"bootscr=/boot.scr\0" \
-	"loadbootscr=ext4load nand 1:0 $scriptaddr /boot${bootscr} || fatload nand 0:0 $scriptaddr ${bootscr}\0" \
-	"loadbootenv=ext4load nand 1:0 $scriptaddr /boot${bootenv} || fatload nand 0:0 $scriptaddr ${bootenv}\0" \
-	"boot_nand=ext4load nand 1:0 0x48000000 /boot${kernel} && bootm 0x48000000\0"
+	"bootenv=/script.bin\0" \
+	"loadbootenv=mw 41000000 0 10000;ext4load nand 1:0 $scriptaddr /boot${bootenv} || fatload nand 0:0 $scriptaddr ${bootenv}; env import 41000000 10000;\0" \
+	"loadscriptbin=ext4load nand 1:0 $scriptbinaddr /boot${scriptbin} || fatload nand 0:0 $scriptbinaddr ${scriptbin}\0" \
+	"loadkernel=ext4load nand 1:0 $kerneladdr /boot${kernel} || fatload nand 0:0 $kerneladdr ${kernel}\0" \
+	"boot_nand=bootm 0x48000000\0"
 
 #define CONFIG_BOOTDELAY	3
 #define CONFIG_SYS_BOOT_GET_CMDLINE
