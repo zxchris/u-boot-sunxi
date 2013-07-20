@@ -90,6 +90,9 @@
 #define CONFIG_NAND
 #define CONFIG_NAND_SUNXI
 #define CONFIG_CMD_NAND                         /* NAND support */
+#define CONFIG_CMD_EXT2                         /* with this we can access ext2 bootfs */
+#define CONFIG_CMD_EXT4                         /* with this we can access ext4 bootfs */
+#define CONFIG_FS_EXT4				/* EXT4 file system support */
 #define CONFIG_SYS_MAX_NAND_DEVICE      1
 #define CONFIG_SYS_NAND_BASE            0x00
 #define CONFIG_CMD_MEMORY
@@ -210,7 +213,7 @@
 #define CONFIG_SYS_BOOT_GET_CMDLINE
 #define CONFIG_AUTO_COMPLETE
 
-#define CONFIG_CMD_FAT			/* with this we can access bootfs in nand */
+#define CONFIG_CMD_FAT      /* with this we can access bootfs in nand */
 #define CONFIG_CMD_BOOTA		/* boot android image */
 #define CONFIG_CMD_RUN			/* run a command */
 #define CONFIG_CMD_BOOTD		/* boot the default command */
