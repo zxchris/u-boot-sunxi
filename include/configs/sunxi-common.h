@@ -155,11 +155,8 @@
 #define CONFIG_ENV_SIZE			(128 << 10)	/* 128KB */
 
 #define CONFIG_BOOTCOMMAND \
+	"setenv machid 0f35;"\
 	"run boot_ram;" \
-	"if run loadbootenv; then " \
-		"echo Loaded environment from ${bootenv};" \
-		"env import -t ${scriptaddr} ${filesize};" \
-	"fi;" \
 	"if test -n \\\"${uenvcmd}\\\"; then " \
 		"echo Running uenvcmd ...;" \
 		"run uenvcmd;" \
@@ -179,6 +176,7 @@
 
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	"console=ttyS0,115200\0" \
+	"bootdelay=1\0"\
 	"panicarg=panic=10\0" \
 	"extraargs=\0" \
 	"loglevel=8\0" \
