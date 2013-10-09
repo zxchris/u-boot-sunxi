@@ -171,17 +171,26 @@
 #define CONFIG_CMD_SAVEENV
 
 #define CONFIG_EXTRA_ENV_SETTINGS \
-	"bootdelay=3\0" \
-	"bootcmd=run setargs boot_normal\0" \
+	"bootdelay=1\0" \
+	"bootcmd=run setargs_nand boot_normal\0" \
 	"console=ttyS0,115200\0" \
-	"nand_root=/dev/nandd\0" \
-	"mmc_root=/dev/mmcblk0p4\0" \
-	"init=/init\0" \
+	"nand_root=/dev/nandb\0" \
 	"loglevel=8\0" \
-	"setargs=setenv bootargs console=${console} root=${nand_root} " \
-	"init=${init} loglevel=${loglevel}\0" \
-	"boot_normal=nand read 50000000 boot; boota 50000000\0" \
-	"boot_recovery=nand read 50000000 recovery; boota 50000000\0" \
+	"bootenv=/uEnv.txt\0" \
+	"kernel=/uImage\0" \
+	"scriptbin=/script.bin\0" \
+	"scriptaddr=0x41000000\0" \
+	"scriptbinaddr=0x43000000\0" \
+	"kerneladdr=0x48000000\0" \
+	"loadbootenv=mw 41000000 0 10000;" \
+	 "ext2load nand 2:0 $scriptaddr /boot${bootenv} || fatload nand 0:0 $scriptaddr ${bootenv};" \
+	 "env import 41000000 10000;" \
+	 "setenv bootargs console=${console} root=${nand_root} loglevel=${loglevel} ${extraargs}\0" \
+	"loadscriptbin=ext2load nand 2:0 $scriptbinaddr /boot${scriptbin} || fatload nand 0:0 $scriptbinaddr ${scriptbin}\0" \
+	"loadkernel=ext2load nand 2:0 $kerneladdr /boot${kernel} || fatload nand 0:0 $kerneladdr ${kernel}\0" \
+	"setargs_nand=run loadbootenv loadscriptbin loadkernel\0" \
+    	"boot_normal=bootm 48000000\0" \
+	"boot_recovery=sunxi_flash read 40007800 recovery;boota 40007800\0" \
 	"boot_fastboot=fastboot\0"
 
 #define CONFIG_BOOTDELAY	1
