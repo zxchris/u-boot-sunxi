@@ -166,17 +166,13 @@
 
 #define CONFIG_BOOTCOMMAND \
 	RUN_BOOT_RAM \
-	"if run loadbootenv; then " \
-	  "echo Loaded environment from ${bootenv};" \
-	  "env import -t ${scriptaddr} ${filesize};" \
+	"if run loadbootscr; then "\
+	  "echo Jumping to ${bootscr};" \
+	  "source ${scriptaddr};" \
 	"fi;" \
 	"if test -n \\\"${uenvcmd}\\\"; then " \
 	  "echo Running uenvcmd ...;" \
 	  "run uenvcmd;" \
-	"fi;" \
-	"if run loadbootscr; then "\
-	  "echo Jumping to ${bootscr};" \
-	  "source ${scriptaddr};" \
 	"fi;" \
 	"run autoboot;" \
 	""
@@ -267,7 +263,7 @@
 	  "\0" \
 	""
 
-#define CONFIG_BOOTDELAY	3
+#define CONFIG_BOOTDELAY	1
 #define CONFIG_SYS_BOOT_GET_CMDLINE
 #define CONFIG_AUTO_COMPLETE
 
