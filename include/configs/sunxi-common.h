@@ -177,10 +177,6 @@
 	  "echo Running uenvcmd ...;" \
 	  "run uenvcmd;" \
 	"fi;" \
-	"if run loadbootscr; then "\
-	  "echo Jumping to ${bootscr};" \
-	  "source ${scriptaddr};" \
-	"fi;" \
 	"run autoboot;" \
 	""
 
@@ -196,8 +192,8 @@
 	"extraargs=\0" \
 	"loglevel=8\0" \
 	"scriptaddr=0x44000000\0" \
-	"device=mmc\0" \
-	"partition=0:1\0" \
+	"device=nand\0" \
+	"partition=1:0\0" \
 	"setargs=" \
 	  "if test -z \\\\\"$root\\\\\"; then"\
 	    " if test \\\\\"$bootpath\\\\\" = \"/boot/\"; then"\
@@ -270,7 +266,7 @@
 	  "\0" \
 	""
 
-#define CONFIG_BOOTDELAY	3
+#define CONFIG_BOOTDELAY	1
 #define CONFIG_SYS_BOOT_GET_CMDLINE
 #define CONFIG_AUTO_COMPLETE
 
