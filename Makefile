@@ -344,7 +344,7 @@ LIBS-y += $(CPUDIR)/tegra-common/libtegra-common.o
 endif
 
 ifeq ($(SOC),sunxi)
-LIBS-y += nand_sunxi/libsunxi-nand.o
+LIBS-y += nand_sunxi/libnand
 endif
 
 LIBS := $(addprefix $(obj),$(sort $(LIBS-y)))
