@@ -91,3 +91,4 @@ GTAGS
 
 # spl ais files
 /spl/*.ais
+libnand
