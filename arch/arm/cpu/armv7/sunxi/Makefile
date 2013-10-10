@@ -37,6 +37,7 @@ COBJS	+= clock.o
 COBJS	+= pinmux.o
 COBJS	+= watchdog.o
 COBJS	+= partition.o
+COBJS	+= fastboot.o
 ifdef DEBUG
 COBJS	+= early_print.o
 endif
