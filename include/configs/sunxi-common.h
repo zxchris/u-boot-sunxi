@@ -359,8 +359,10 @@
 #endif
 
 /* GPIO */
+#if 0
 #define CONFIG_SUNXI_GPIO
 #define CONFIG_CMD_GPIO
+#endif
 
 /* PMU */
 #if !defined CONFIG_AXP152_POWER && !defined CONFIG_NO_AXP
