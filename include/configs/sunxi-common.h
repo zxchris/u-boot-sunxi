@@ -41,7 +41,7 @@
 #endif
 
 #include <asm/arch/cpu.h>	/* get chip and board defs */
-
+#define SYS_CONFIG_BASE             0x43000000
 #define CONFIG_SYS_TEXT_BASE		0x4a000000
 
 /*
