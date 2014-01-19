@@ -74,7 +74,11 @@
 /* A10 has 1 banks of DRAM, we use only bank 1 in U-Boot */
 #define CONFIG_NR_DRAM_BANKS		1
 #define PHYS_SDRAM_0			CONFIG_SYS_SDRAM_BASE
-#define PHYS_SDRAM_0_SIZE		0x40000000
+#ifdef CONFIG_SUN7I
+#define PHYS_SDRAM_0_SIZE		0x80000000 /* 2 GiB */
+#else
+#define PHYS_SDRAM_0_SIZE		0x40000000 /* 1 GiB */
+#endif
 #if 0
 /* Nand config */
 #define CONFIG_NAND
@@ -205,6 +209,7 @@
 	"kernel=uImage\0" \
 	"bootenv=uEnv.txt\0" \
 	"bootscr=boot.scr\0" \
+	"script=script.bin\0" \
 	"loadbootscr=" \
 	  "fatload $device $partition $scriptaddr ${bootscr}" \
 	  " || " \
@@ -223,19 +228,19 @@
 	  "if "\
 	    "bootpath=/boot/" \
 	    " && " \
-	    "ext2load $device $partition 0x43000000 ${bootpath}script.bin" \
+	    "ext2load $device $partition 0x43000000 ${bootpath}${script}" \
 	    " && " \
 	    "ext2load $device $partition 0x48000000 ${bootpath}${kernel}" \
 	  ";then true; elif " \
 	    "bootpath=/" \
 	    " && " \
-	    "fatload $device $partition 0x43000000 script.bin" \
+	    "fatload $device $partition 0x43000000 ${script}" \
 	    " && " \
 	    "fatload $device $partition 0x48000000 ${kernel}" \
 	  ";then true; elif " \
 	    "bootpath=/" \
 	    " && " \
-	    "ext2load $device $partition 0x43000000 ${bootpath}script.bin" \
+	    "ext2load $device $partition 0x43000000 ${bootpath}${script}" \
 	    " && " \
 	    "ext2load $device $partition 0x48000000 ${bootpath}${kernel}" \
 	  ";then true; else "\
@@ -417,6 +422,16 @@
 
 /* Ethernet support */
 #ifdef CONFIG_SUNXI_EMAC
+#define CONFIG_MII			/* MII PHY management		*/
+#define CONFIG_CMD_MII
+#define CONFIG_CMD_NET
+#endif
+
+#ifdef CONFIG_SUNXI_GMAC
+#define CONFIG_DESIGNWARE_ETH		/* GMAC can use designware driver */
+#define CONFIG_DW_AUTONEG
+#define CONFIG_PHY_GIGE			/* GMAC can use gigabit PHY	*/
+#define CONFIG_SYS_DCACHE_OFF		/* dw driver doesn't support dcache */
 #define CONFIG_MII			/* MII PHY management		*/
 #define CONFIG_CMD_MII
 #define CONFIG_CMD_NET

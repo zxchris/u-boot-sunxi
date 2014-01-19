@@ -73,7 +73,7 @@ int checkboard(void)
 
 int dram_init(void)
 {
-	gd->ram_size = get_ram_size((long *)PHYS_SDRAM_0, PHYS_SDRAM_0_SIZE);
+	gd->ram_size = get_ram_size((unsigned long *)PHYS_SDRAM_0, PHYS_SDRAM_0_SIZE);
 
 	return 0;
 }
@@ -94,7 +94,7 @@ int board_mmc_init(bd_t *bis)
 void sunxi_board_init(void)
 {
 	int power_failed = 0;
-	int ramsize;
+	unsigned long ramsize;
 
 	printf("DRAM:");
 	ramsize = sunxi_dram_init();
@@ -106,7 +106,7 @@ void sunxi_board_init(void)
 		printf(" ?");
 		ramsize = sunxi_dram_init();
 	}
-	printf(" %d MiB\n", ramsize >> 20);
+	printf(" %lu MiB\n", ramsize >> 20);
 	if (!ramsize)
 		hang();
 
@@ -120,7 +120,11 @@ void sunxi_board_init(void)
 #ifdef CONFIG_AXP209_POWER
 	power_failed |= axp209_init();
 	power_failed |= axp209_set_dcdc2(1400);
+#ifdef CONFIG_FAST_MBUS
+	power_failed |= axp209_set_dcdc3(1300);
+#else
 	power_failed |= axp209_set_dcdc3(1250);
+#endif
 	power_failed |= axp209_set_ldo2(3000);
 	power_failed |= axp209_set_ldo3(2800);
 	power_failed |= axp209_set_ldo4(2800);
