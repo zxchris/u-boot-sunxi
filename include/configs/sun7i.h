@@ -204,11 +204,11 @@
 	"scriptbinaddr=0x43000000\0" \
 	"kerneladdr=0x48000000\0" \
 	"loadbootenv=mw 41000000 0 10000;" \
-	 "ext4load nand 2:0 $scriptaddr /boot${bootenv} || fatload nand 0:0 $scriptaddr ${bootenv};" \
+	 "ext4load nand 1:0 $scriptaddr /boot${bootenv} || fatload nand 0:0 $scriptaddr ${bootenv};" \
 	 "env import 41000000 10000;" \
 	 "setenv bootargs console=${console} root=${nand_root} loglevel=${loglevel} ${extraargs}\0" \
-	"loadscriptbin=ext4load nand 2:0 $scriptbinaddr /boot${scriptbin} || fatload nand 0:0 $scriptbinaddr ${scriptbin}\0" \
-	"loadkernel=ext4load nand 2:0 $kerneladdr /boot${kernel} || fatload nand 0:0 $kerneladdr ${kernel}\0" \
+	"loadscriptbin=ext4load nand 1:0 $scriptbinaddr /boot${scriptbin} || fatload nand 0:0 $scriptbinaddr ${scriptbin}\0" \
+	"loadkernel=ext4load nand 1:0 $kerneladdr /boot${kernel} || fatload nand 0:0 $kerneladdr ${kernel}\0" \
 	"setargs_nand=run loadbootenv loadscriptbin loadkernel\0" \
     	"boot_normal=bootm 48000000\0" \
 	"boot_recovery=sunxi_flash read 40007800 recovery;boota 40007800\0" \
