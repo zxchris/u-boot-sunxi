@@ -205,9 +205,9 @@
 	"loadbootenv=mw 41000000 0 10000;" \
 	 "ext4load nand 1:0 $scriptaddr /boot${bootenv} || fatload nand 0:0 $scriptaddr ${bootenv};" \
 	 "env import 41000000 10000;" \
-	 "if test -z \\\\\"$root\\\\\"; then"\
-	     "root=\"${nand_root}\";"\
-	 "fi;"\
+	 " if test -z \\\\\"$root\\\\\"; then"\
+	     " root=\"${nand_root}\";"\
+	 " fi;"\
 	 "setenv bootargs console=${console} root=${root} loglevel=${loglevel} ${extraargs}\0" \
 	"loadscriptbin=ext4load nand 1:0 $scriptbinaddr /boot${scriptbin} || fatload nand 0:0 $scriptbinaddr ${scriptbin}\0" \
 	"loadkernel=ext4load nand 1:0 $kerneladdr /boot${kernel} || fatload nand 0:0 $kerneladdr ${kernel}\0" \
