@@ -60,6 +60,8 @@
 #include "../drivers/net/lan91c96.h"
 #endif
 
+#include "linux/compiler.h"
+
 DECLARE_GLOBAL_DATA_PTR;
 
 ulong monitor_flash_len;
@@ -84,7 +86,6 @@ extern void sw_gpio_init(void);
 extern int script_parser_fetch(char *main_name, char *sub_name, int value[], int count);
 extern int script_parser_init_early(void);
 #endif
-
 /************************************************************************
  * Coloured LED functionality
  ************************************************************************

@@ -30,7 +30,7 @@ function build_uboot()
 
 if [ $(basename `pwd`) != "u-boot" ] ; then
     echo "Please run at the top directory of u-boot"
-    exit 1
+    #exit 1
 fi
 
 if [ -n "${LICHEE_CHIP}" ] ; then

@@ -39,6 +39,8 @@
 #include <hush.h>
 #endif
 
+#include "linux/compiler.h"
+
 #include <post.h>
 
 #if defined(CONFIG_SILENT_CONSOLE) || defined(CONFIG_POST) || defined(CONFIG_CMDLINE_EDITING)
