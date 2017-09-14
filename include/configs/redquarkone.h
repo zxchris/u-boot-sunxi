@@ -139,7 +139,7 @@
 #define CONFIG_SYS_LONGHELP				/* undef to save memory */
 #define CONFIG_SYS_HUSH_PARSER			/* use "hush" command parser	*/
 #define CONFIG_SYS_PROMPT_HUSH_PS2	"> "
-#define CONFIG_SYS_PROMPT		"sun7i#"
+#define CONFIG_SYS_PROMPT		"redquark#"
 #define CONFIG_SYS_CBSIZE	256			/* Console I/O Buffer Size */
 #define CONFIG_SYS_PBSIZE	384			/* Print Buffer Size */
 #define CONFIG_SYS_MAXARGS	16			/* max number of command args */
@@ -173,7 +173,7 @@
 #define CONFIG_SYS_NO_FLASH
 
 #define CONFIG_SYS_MONITOR_LEN		(256 << 10)	/* 256 KiB */
-#define CONFIG_IDENT_STRING			" Allwinner Technology "
+#define CONFIG_IDENT_STRING			" Retro Games Ltd "
 
 #define CONFIG_ENV_IS_NOWHERE 1
 
@@ -217,7 +217,12 @@
 	"boot_fastboot=fastboot\0"
 
 
-#define CONFIG_BOOTDELAY	1
+// Prevent autoboot from halting unless a specific key sequence is received
+#define CONFIG_AUTOBOOT_KEYED
+#define CONFIG_AUTOBOOT_STOP_STR    "rq1"
+#define CONFIG_ZERO_BOOTDELAY_CHECK
+
+#define CONFIG_BOOTDELAY	0
 #define CONFIG_BOOTCOMMAND	"nand read 50000000 boot;boota 50000000"
 #define CONFIG_SYS_BOOT_GET_CMDLINE
 #define CONFIG_AUTO_COMPLETE
@@ -226,5 +231,6 @@
 #define CONFIG_CMD_BOOTA		/* boot android image */
 #define CONFIG_CMD_RUN			/* run a command */
 #define CONFIG_CMD_BOOTD		/* boot the default command */
+
 
 #endif /* __CONFIG_H */
