@@ -1,0 +1,7 @@
+ export CROSS_COMPILE=arm-linux-gnueabihf-
+ make redquarkone_config
+ make 
+
+ Sometimes lib/crc32.o won't build. Didn't work out why, but running the following "fixes" it....
+
+./MAKEALL -v retrogames
