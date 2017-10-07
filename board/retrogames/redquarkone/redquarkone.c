@@ -297,7 +297,7 @@ int mmc_get_env_addr(struct mmc *mmc, u32 *env_addr) {
 #ifdef CONFIG_DISPLAY_BOARDINFO
 int checkboard(void)
 {
-	puts("Board: SUN7I-EVB\n");
+	puts("Board: sun7i-Redquark One\n");
 	return 0;
 }
 #endif
