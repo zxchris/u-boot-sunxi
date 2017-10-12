@@ -31,13 +31,17 @@
  * High Level Configuration Options
  */
 
-//#define DEBUG
-//#define DEBUG_TICK_PRINTF
+/*
+#define DEBUG
+#define DEBUG_TICK_PRINTF
+*/
 
 #define CONFIG_ALLWINNER			/* It's a Allwinner chip */
 #define	CONFIG_SUNXI				/* which is sunxi family */
 #define CONFIG_SUN7I				/* which is sun7i */
-//#define CONFIG_FPGA					/* working with fpga board */
+
+/* #define CONFIG_FPGA	*/				/* working with fpga board */
+
 #define CONFIG_CMD_BOOTA
 #include <asm/arch/cpu.h>			/* get chip and board defs */
 
@@ -84,7 +88,7 @@
 #define PHYS_SDRAM_1				CONFIG_SYS_SDRAM_BASE	/* SDRAM Bank #1 */
 #define PHYS_SDRAM_1_SIZE			(512 << 20)				/* 0x20000000, 512 MB Bank #1 */
 
-//#define CONFIG_SYS_MONITOR_BASE	0x00000000
+/* #define CONFIG_SYS_MONITOR_BASE	0x00000000 */
 
 /* Nand config */
 #define CONFIG_NAND
@@ -217,7 +221,7 @@
 	"boot_fastboot=fastboot\0"
 
 
-// Prevent autoboot from halting unless a specific key sequence is received
+/* Prevent autoboot from halting unless a specific key sequence is received */
 #define CONFIG_AUTOBOOT_KEYED
 #define CONFIG_AUTOBOOT_STOP_STR    "rq1"
 #define CONFIG_ZERO_BOOTDELAY_CHECK
